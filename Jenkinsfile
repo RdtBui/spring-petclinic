@@ -4,6 +4,9 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        echo 'Building...'
+        env.totalCommits++
+        echo env.totalCommits
         sh './mvnw package'
       }
     }
@@ -15,14 +18,6 @@ pipeline {
     stage ('Package') {
       steps {
         echo 'Packaging...'
-      }
-    }
-    stage ('Deploy') {
-      when {
-        branch 'master'
-      }
-      steps {
-        echo 'Deploying...'
       }
     }
   }
