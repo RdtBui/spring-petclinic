@@ -7,7 +7,17 @@ pipeline {
         echo 'Building...'
       
         script {
-          commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
+           def getLastSuccessfulCommit() {
+              def lastSuccessfulHash = null
+              def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
+
+              if ( lastSuccessfulBuild ) {
+                  lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
+              }
+              return lastSuccessfulHash
+          }
+          
+          getLastSuccessfulCommit()
         }
         
         sh './mvnw package'
