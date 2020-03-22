@@ -1,33 +1,15 @@
 node {
-    stage('Build') {
-     
-        echo 'Building...'
-      
-       
-
-         getLastSuccessfulCommit()
-        
-        sh './mvnw package'
-      
-    }
-    stage ('Test') {
-      
-        echo 'Testing...'
-      
-    }
-    stage ('Package') {
-      
-        echo 'Packaging...'
-      
+    script{
+        def lastSuccessfulBuildID = 0
+        def build = currentBuild.previousBuild
+        while (build != null) {
+            if (build.result == "SUCCESS")
+            {
+                lastSuccessfulBuildID = build.id as Integer
+                break
+            }
+            build = build.previousBuild
+        }
+        println lastSuccessfulBuildID
     }
 }
-
-def getLastSuccessfulCommit() {
-              def lastSuccessfulHash = null
-              def lastSuccessfulBuild = currentBuild.getPreviousSuccessfulBuild()
-
-              if ( lastSuccessfulBuild ) {
-                  lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
-              }
-              return lastSuccessfulHash
-        }
