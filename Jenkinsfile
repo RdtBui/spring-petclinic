@@ -5,8 +5,18 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building...'
-        env.totalCommits++
-        echo env.totalCommits
+        
+        if (fileExists('message1.json')) {
+          
+        } else {
+          def data = readJSON text: '{}'
+          data.a = "test: ${myVar}" as String
+          writeJSON(file: 'message1.json', json: data, pretty: 4)
+        }
+        
+       
+        
+        
         sh './mvnw package'
       }
     }
@@ -21,4 +31,6 @@ pipeline {
       }
     }
   }
+  
+  
 }
