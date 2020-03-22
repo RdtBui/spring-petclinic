@@ -24,7 +24,7 @@ node {
 
 def getLastSuccessfulCommit() {
               def lastSuccessfulHash = null
-              def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
+              def lastSuccessfulBuild = currentBuild.getPreviousSuccessfulBuild()
 
               if ( lastSuccessfulBuild ) {
                   lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
