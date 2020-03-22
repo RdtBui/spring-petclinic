@@ -1,6 +1,6 @@
 node {
     stage('Build') {
-      steps {
+     
         echo 'Building...'
       
        
@@ -8,17 +8,17 @@ node {
          getLastSuccessfulCommit()
         
         sh './mvnw package'
-      }
+      
     }
     stage ('Test') {
-      steps {
+      
         echo 'Testing...'
-      }
+      
     }
     stage ('Package') {
-      steps {
+      
         echo 'Packaging...'
-      }
+      
     }
 }
 
