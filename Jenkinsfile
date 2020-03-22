@@ -1,12 +1,9 @@
-pipeline {
-  agent any
-  
-  stages {
+node {
     stage('Build') {
       steps {
         echo 'Building...'
       
-        script {
+       
            def getLastSuccessfulCommit() {
               def lastSuccessfulHash = null
               def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
@@ -15,10 +12,8 @@ pipeline {
                   lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
               }
               return lastSuccessfulHash
-          }
-          
-          getLastSuccessfulCommit()
         }
+         getLastSuccessfulCommit()
         
         sh './mvnw package'
       }
@@ -33,7 +28,4 @@ pipeline {
         echo 'Packaging...'
       }
     }
-  }
-  
-  
 }
