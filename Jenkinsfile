@@ -1,22 +1,25 @@
 node {
     script{
-        def lastSuccessfulBuildID = 0
-        def lastSuccessfulHash = null
-        def build = currentBuild.previousBuild
-        
-        while (build != null) {
-            if (build.result == "SUCCESS")
-            {
-                lastSuccessfulBuildID = build.id as Integer
-                lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuildID )
-                break
-            }
-            build = build.previousBuild
-        }
-        println lastSuccessfulHash
+            def lastSuccessfulCommit = getLastSuccessfulCommit()
+      def currentCommit = commitHashForBuild(currentBuild.rawBuild)
+      if (lastSuccessfulCommit) {
+        commits = sh(
+          script: "git rev-list $currentCommit \"^$lastSuccessfulCommit\"",
+          returnStdout: true
+        ).split('\n')
+        println "Commits are: $commits"
+      }
     }
 }
 def commitHashForBuild(build) {
   def scmAction = build?.actions.find { action -> action instanceof jenkins.scm.api.SCMRevisionAction }
   return scmAction?.revision?.hash
+}
+def getLastSuccessfulCommit() {
+  def lastSuccessfulHash = null
+  def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
+  if ( lastSuccessfulBuild ) {
+    lastSuccessfulHash = commitHashForBuild(lastSuccessfulBuild)
+  }
+  return lastSuccessfulHash
 }
