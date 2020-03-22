@@ -5,21 +5,10 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building...'
-        
+        commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
         script {
-          if (fileExists('message1.json')) {
-            echo 'Exists'
-          } else {
-            echo 'Don\'t exists'
-            def data = readJSON text: '{}'
-            data.a = "test: ${myVar}" as String
-            writeJSON(file: 'message1.json', json: data, pretty: 4)
-          }
+          commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
         }
-        
-       
-        
-        
         sh './mvnw package'
       }
     }
