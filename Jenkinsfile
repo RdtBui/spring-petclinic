@@ -6,12 +6,14 @@ pipeline {
       steps {
         echo 'Building...'
         
-        if (fileExists('message1.json')) {
+        script {
+          if (fileExists('message1.json')) {
           
-        } else {
-          def data = readJSON text: '{}'
-          data.a = "test: ${myVar}" as String
-          writeJSON(file: 'message1.json', json: data, pretty: 4)
+          } else {
+            def data = readJSON text: '{}'
+            data.a = "test: ${myVar}" as String
+            writeJSON(file: 'message1.json', json: data, pretty: 4)
+          }
         }
         
        
