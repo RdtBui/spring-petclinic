@@ -10,11 +10,13 @@ pipeline {
     stage ('Test') {
       steps {
         echo 'Testing...'
+        // Add some testing code implementation here
       }
     }
     stage ('Package') {
       steps {
         echo 'Packaging...'
+        // Add some packaging code implementation here
       }
     }
     stage ('Deploy') {
@@ -23,12 +25,8 @@ pipeline {
       }
       steps {
         echo 'Deploying...'
+        // Add some deploying code implementation here
       }
-    }
-  }
-  post {
-    success {
-      slackSend (color: '#00FF00', message: "Successful Deploy: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'")
     }
   }
 }
